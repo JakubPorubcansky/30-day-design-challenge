@@ -1,0 +1,10 @@
+**/*.pyc
+.coverage
+htmlcov
+**/.DS_Store
+**/*.log
+.hypothesis
+venv
+.env
+*/.venv/*
+.pytest_cache
