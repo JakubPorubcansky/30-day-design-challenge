@@ -31,26 +31,27 @@ I'm really excited for you to start with the challenges. Good luck!
   - [Day 8: Payment Strategy](#day-8-payment-strategy)
     - [Resources](#resources-6)
   - [Day 9: Plugins](#day-9-plugins)
-  - [Day 10: OO to Functional](#day-10-oo-to-functional)
     - [Resources](#resources-7)
-  - [Day 11: Cohesion](#day-11-cohesion)
+  - [Day 10: OO to Functional](#day-10-oo-to-functional)
     - [Resources](#resources-8)
-  - [Day 12: MVP](#day-12-mvp)
+  - [Day 11: Cohesion](#day-11-cohesion)
     - [Resources](#resources-9)
-  - [Day 13: Inheritance](#day-13-inheritance)
+  - [Day 12: MVP](#day-12-mvp)
     - [Resources](#resources-10)
-  - [Day 14: Abstraction](#day-14-abstraction)
+  - [Day 13: Inheritance](#day-13-inheritance)
     - [Resources](#resources-11)
-  - [Day 15: Higher-Order Functions](#day-15-higher-order-functions)
+  - [Day 14: Abstraction](#day-14-abstraction)
     - [Resources](#resources-12)
+  - [Day 15: Higher-Order Functions](#day-15-higher-order-functions)
+    - [Resources](#resources-13)
   - [Day 16: Configuration](#day-16-configuration)
   - [Day 17: Concurrency](#day-17-concurrency)
-    - [Resources](#resources-13)
+    - [Resources](#resources-14)
   - [Day 18: Refactoring](#day-18-refactoring)
   - [Day 19: Itertools](#day-19-itertools)
-    - [Resources](#resources-14)
-  - [Day 20: Inappropriate Intimacy](#day-20-inappropriate-intimacy)
     - [Resources](#resources-15)
+  - [Day 20: Inappropriate Intimacy](#day-20-inappropriate-intimacy)
+    - [Resources](#resources-16)
 - [Prerequisites](#prerequisites)
 - [Getting Started](#getting-started)
 
@@ -90,7 +91,8 @@ The challenge is to write the type annotations so that:
 
 * All type errors identified by the IDE are gone
 * The type annotations are a generic as possible - in other words, the type annotations shouldn't impose any extra limitations on how you can use the functions
-* You're not allowed to use the Any type in this challenge. You can make minor modifications to the code if needed. However, the functionality should stay the same and you're not allowed to change things like function arguments and return types.
+
+You're not allowed to use the Any type in this challenge. You can make minor modifications to the code if needed. However, the functionality should stay the same and you're not allowed to change things like function arguments and return types.
 
 #### Resources
 * [PEP 0484](https://peps.python.org/pep-0484/) (Website)
@@ -200,8 +202,9 @@ Once you've refactored the code so that it supports a plugin interface, test it 
 
 * You can use importlib to dynamically load Python scripts and you can use os.walk to retrieve the files in a particular folder.
 * Feel free to split things up into separate files. For example, you could create a separate file that manages loading and getting access to the plugins, so your main.py file remains relatively small.
-Resources
-* [Video](https://www.youtube.com/watch?v=iCE1bDoit9Q)
+
+#### Resources
+* [Plugin Architecture](https://www.youtube.com/watch?v=iCE1bDoit9Q)
   
 </details>
 
@@ -211,7 +214,7 @@ The debate over functional vs object-oriented programming has been ongoing for d
 
 Even though I'm using more and more concepts from the functional paradigm in my own projects, I find that in some cases an object-oriented approach is a better solution. Fortunately for us, Python supports both object-oriented and functional programming!
 
-This challenge is aimed at helping you understand the difference between object-oriented (OO) programming and functional programming. Download the code and take a look. As you can see, the code has been setup as an object-oriented program. There are various Shape classes as well as a ShapeCalculator class.
+This challenge is aimed at helping you understand the difference between object-oriented (OO) programming and functional programming. As you can see, the code has been setup as an object-oriented program. There are various Shape classes as well as a ShapeCalculator class.
 
 Change the code to follow a functional coding style. Make sure the refactored code has the following properties:
 
@@ -260,10 +263,10 @@ Unfortunately, many developers abuse inheritance to do other things than decoupl
 
 The code retrieves the weather information from a free-to-use weather API and prints it to the console. To run the code, you'll need to obtain a free API key from the OpenWeather service. That requires creating an account and you automatically receive one after you confirm your e-mail address. To create an account, [follow these instructions](https://openweathermap.org/appid#signup). Note that it might take some few minutes before the API key is activated on their servers.
 
-After you've created the free account and you have an API key, download the code and replace the key in the code with your API key. Run the code to see what it does.
-Analyze the code, and take a look at how it's organized. In particular, think about how inheritance is being used in the code.
-Refactor the code so that inheritance is no longer used.
-Compare your second version with the original code and consider in what ways the new version is better. How did you remove the inheritance relationship? Did it lead you to change other things as well in the code?
+* After you've created the free account and you have an API key, download the code and replace the key in the code with your API key. Run the code to see what it does.
+* Analyze the code, and take a look at how it's organized. In particular, think about how inheritance is being used in the code.
+* Refactor the code so that inheritance is no longer used.
+* Compare your second version with the original code and consider in what ways the new version is better. How did you remove the inheritance relationship? Did it lead you to change other things as well in the code?
 
 #### Resources
 * [Composition vs. Inheritance](https://www.youtube.com/watch?v=0mcP8ZpUR38) (Video)
@@ -272,16 +275,16 @@ Compare your second version with the original code and consider in what ways the
 
 Introducing (levels of) abstraction allows classes to need less knowledge of each other, thus reducing coupling. This makes code more readable, maintainable and understood better both in depth, but also from a higher (conceptual) level.
 
-For this challenge you need to refactor the given code so that the WeatherService becomes agnostic to the requests module.
+For this challenge you need to refactor the given code so that the `WeatherService` becomes agnostic to the requests module.
 
-In the current setup, WeatherService fetches the current weather forecast of a given city using the OpenWeather API. However, the WeatherService class is coupled to the requests library. This makes it hard to change the request module in the future to something else, or to replace it by a mock http request when testing the code.
+In the current setup, `WeatherService` fetches the current weather forecast of a given city using the OpenWeather API. However, the `WeatherService` class is coupled to the requests library. This makes it hard to change the request module in the future to something else, or to replace it by a mock http request when testing the code.
 
-The challenge is to use abstraction to separate the WeatherService class from the requests module.
+The challenge is to use abstraction to separate the `WeatherService` class from the requests module.
 
 <details>
 <summary>Hints</summary>
 
-You can create a separate RequestsClient class that defines a get method for fetching data from an API, and then let the WeatherService depend on an abstraction.
+You can create a separate `RequestsClient` class that defines a get method for fetching data from an API, and then let the WeatherService depend on an abstraction.
 
 </details>
 
@@ -300,9 +303,9 @@ Some common examples of higher-order functions in Python include map, filter, an
 
 The goal of this challenge is to take the object-oriented weather service code from the previous challenge (see the Downloads section at the top) and change it to functional code that relies on a higher-order function, as follows:
 
-First, turn the WeatherService class into separate functions. Specifically, create a `get_forecast` function that takes an `HttpClient`, a city and an API key and then returns the forecast object.
-Turn the properties that retrieve temperature, humidity, etc, into separate functions that get the forecast object as an argument and then extract the relevant information.
-Now, change the `RequestsClient` class into a get function, and then pass that function to the `get_forecast` function (this turns it into a higher-order function!)
+* First, turn the `WeatherService` class into separate functions. Specifically, create a `get_forecast` function that takes an `HttpClient`, a city and an API key and then returns the forecast object.
+* Turn the properties that retrieve temperature, humidity, etc, into separate functions that get the forecast object as an argument and then extract the relevant information.
+* Now, change the `RequestsClient` class into a get function, and then pass that function to the `get_forecast` function (this turns it into a higher-order function!)
 
 As a bonus, can you define another function that allows you to get a weather forecast without having to provide the http getter function and the API key?
 
@@ -329,7 +332,7 @@ Using coroutines and the async/await syntax makes it easy to write concurrent co
 
 I've extended the weather service application to now automatically provide the current weather for the capital cities of a number of countries. It relies on another free API to retrieve the capital of a country first, and then it retrieves the weather information.
 
-Currently, the application (see the code download for this challenge) doesn't use concurrent programming at the moment. When you run the code (make sure to insert your OpenWeather API key first!), you'll see that it actually runs quite slowly. The challenge is to refactor this code so it relies on concurrency to make it respond faster. Use the asyncio module together with async and await. There are a few different ways in which you can structure the API calls, but only one of them is optimal!
+Currently, the application doesn't use concurrent programming at the moment. When you run the code (make sure to insert your OpenWeather API key first!), you'll see that it actually runs quite slowly. The challenge is to refactor this code so it relies on concurrency to make it respond faster. Use the asyncio module together with async and await. There are a few different ways in which you can structure the API calls, but only one of them is optimal!
 
 Note that for this challenge, you don't need to worry about rate limits, even though that is a nice bonus to consider if you want to dive in deeper.
 
