@@ -2,7 +2,7 @@ from typing import Any, Protocol
 
 import requests
 
-API_KEY = "123456789"
+API_KEY = "ebf34412b1996ce803258dc3a0f54f67"
 
 
 class CityNotFoundError(Exception):
