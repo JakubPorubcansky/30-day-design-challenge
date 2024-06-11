@@ -1,5 +1,10 @@
 import requests
+import os
+import dotenv
 
+dotenv.load_dotenv()
+
+API_KEY = os.getenv("API_KEY")
 
 class CityNotFoundError(Exception):
     pass
@@ -41,8 +46,13 @@ class MyWeatherService:
         temperature -= 273.15
         print(f"The current temperature in {city} is {temperature:.1f} °C.")
 
+def main() -> None:
+    try:
+        ws = WeatherService(api_key=API_KEY)
+        my_ws = MyWeatherService(weather_service=ws)
+        my_ws.retrieve_forecast(city="Utrecht")
+    except WeatherServiceException as e:
+        print(f"An error occurred: {e.msg}")
 
 if __name__ == "__main__":
-    ws = WeatherService(api_key="ebf34412b1996ce803258dc3a0f54f67")
-    my_ws = MyWeatherService(weather_service=ws)
-    my_ws.retrieve_forecast(city="Utrecht")
+    main()

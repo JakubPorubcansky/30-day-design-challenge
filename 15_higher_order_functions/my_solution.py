@@ -2,8 +2,12 @@ from typing import Any, Protocol
 from functools import partial
 
 import requests
+import os
+import dotenv
 
-API_KEY = "ebf34412b1996ce803258dc3a0f54f67"
+dotenv.load_dotenv()
+
+API_KEY = os.getenv("API_KEY")
 
 
 class CityNotFoundError(Exception):

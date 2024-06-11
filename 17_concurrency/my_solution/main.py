@@ -3,8 +3,12 @@ from typing import Any
 import requests
 import asyncio
 import time
+import os
+import dotenv
 
-API_KEY = "ebf34412b1996ce803258dc3a0f54f67"
+dotenv.load_dotenv()
+
+API_KEY = os.getenv("API_KEY")
 
 def http_get_sync(url: str):
     response = requests.get(url, timeout=5)
