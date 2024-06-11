@@ -1,1 +1,1 @@
-30 days design challenge on arjancodes.com
+30 day design challenge on [arjancodes.com](https://arjancodes.com/)
