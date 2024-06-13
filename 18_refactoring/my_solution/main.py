@@ -40,7 +40,9 @@ def map_condition_arg_to_weather_processing_funcs(condition_arg: str) -> list[We
     elif condition_arg in ConditionArgs.WIND.value: return [process_wind]
     elif condition_arg in ConditionArgs.ALL.value: return [process_temperature, process_humidity, process_wind]
 
-def add_arguments_to_parser(parser: argparse.ArgumentParser) -> None:
+def create_argument_parser(parser: argparse.ArgumentParser) -> None:
+    parser = argparse.ArgumentParser(description="Get the current weather information for a city")
+
     parser.add_argument(
         "city", help="Name of the city to get the weather information for"
     )
@@ -60,6 +62,8 @@ def add_arguments_to_parser(parser: argparse.ArgumentParser) -> None:
         help="API key for the OpenWeatherMap API",
     )
 
+    return parser
+
 def check_api_key(args) -> None:
     if not args.api_key:
         print("Please provide an API key with the --api-key option.")
@@ -73,9 +77,7 @@ def collect_processing_funcs(args) -> list[WeatherProcessingFn]:
     return list(set(collected))
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Get the current weather information for a city")
-
-    add_arguments_to_parser(parser)
+    parser = create_argument_parser()
     args = parser.parse_args()
 
     check_api_key(args)
