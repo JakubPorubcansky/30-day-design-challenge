@@ -16,11 +16,11 @@ RETURN_TO_DB_TYPE_MAP = {
 
 DB_TO_RETURN_TYPE_MAP = {value: key for key, value in RETURN_TO_DB_TYPE_MAP.items()}
 
-class DataStorageHandler:
+class DatabaseHandler:
     def __init__(self):
         self.session = DBSession()
 
-    def __enter__(self) -> DataStorageHandler:
+    def __enter__(self) -> DatabaseHandler:
         self.session.__enter__()
         return self
     

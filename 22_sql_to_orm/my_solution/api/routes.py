@@ -1,48 +1,39 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 import business.operations as operations
-import business.models as models
-from database.db import DataStorageHandler
+import business.models as md
+from database.db import DatabaseHandler
 
 router = APIRouter()
 
+def get_db_handler():
+    handler = DatabaseHandler()
+    yield handler
 
-@router.post("/events")
-async def create_event(event: models.EventCreate):
-    handler = DataStorageHandler()
-    event = operations.create_event(handler, event)
-    return {"event_id": event.id}
-
-
-@router.delete("/events/{event_id}")
-async def delete_event(event_id: int):
-    handler = DataStorageHandler()
-    event = operations.delete_event(handler, event_id)
-    return dict(event)
+@router.post("/events", response_model=md.EventReturn)
+async def create_event(event: md.EventCreate, handler = Depends(get_db_handler)):
+    return operations.create_event(handler, event)
 
 
-@router.get("/events/{event_id}")
-async def get_event(event_id: int):
-    handler = DataStorageHandler()
-    event = operations.get_event(handler, event_id)
-    return dict(event)
+@router.delete("/events/{event_id}", response_model=md.EventReturn)
+async def delete_event(event_id: int, handler = Depends(get_db_handler)):
+    return operations.delete_event(handler, event_id)
 
 
-@router.get("/events")
-async def get_all_events():
-    handler = DataStorageHandler()
-    events = operations.get_all_events(handler)
-    return [dict(event) for event in events]
+@router.get("/events/{event_id}", response_model=md.EventReturn)
+async def get_event(event_id: int, handler = Depends(get_db_handler)):
+    return operations.get_event(handler, event_id)
 
 
-@router.post("/tickets")
-async def book_ticket(ticket: models.TicketCreate):
-    handler = DataStorageHandler()
-    ticket = operations.book_ticket(handler, ticket)
-    return {"ticket_id": ticket.id}
+@router.get("/events", response_model=list[md.EventReturn])
+async def get_all_events(handler = Depends(get_db_handler)):
+    return operations.get_all_events(handler)
 
 
-@router.get("/tickets/{ticket_id}")
-async def get_ticket(ticket_id: int):
-    handler = DataStorageHandler()
-    ticket = operations.get_ticket(handler, ticket_id)
-    return dict(ticket)
+@router.post("/tickets", response_model=md.TicketReturn)
+async def book_ticket(ticket: md.TicketCreate, handler = Depends(get_db_handler)):
+    return operations.book_ticket(handler, ticket)
+
+
+@router.get("/tickets/{ticket_id}", response_model=md.TicketReturn)
+async def get_ticket(ticket_id: int, handler = Depends(get_db_handler)):
+    return operations.get_ticket(handler, ticket_id)
