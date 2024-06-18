@@ -27,6 +27,12 @@ class EventReturn(BaseModel):
     @classmethod
     def name(cls):
         return "Event"
+    
+    def has_started(self) -> bool:
+        datetime.now() >= self.start_date
+
+    def has_finished(self) -> bool:
+        datetime.now() > self.end_date
 
 
 class TicketReturn(BaseModel):

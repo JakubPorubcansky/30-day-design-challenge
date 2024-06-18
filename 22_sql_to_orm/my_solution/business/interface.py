@@ -1,6 +1,40 @@
 from __future__ import annotations
-from typing import Protocol
+from enum import Enum
+from dataclasses import dataclass
+from typing import Any, List, Optional, Protocol
 from business.exceptions import ResourceNotFoundException
+
+
+class Operator(Enum):
+    EQUALS = "=="
+    NOT_EQUALS = "!="
+    LESS_THAN = "<"
+    LESS_THAN_OR_EQUAL = "<="
+    GREATER_THAN = ">"
+    GREATER_THAN_OR_EQUAL = ">="
+
+
+class ConditionsJoinOperator(Enum):
+    AND = "AND"
+    OR = "OR"
+
+
+class Condition:
+    pass
+
+
+@dataclass
+class FilterCondition(Condition):
+    attribute: str
+    operator: Operator
+    value: Any
+
+
+@dataclass
+class JointCondition(Condition):
+    left: Condition
+    operator: ConditionsJoinOperator
+    right: Condition
 
 
 class DataStorageInterface(Protocol):
@@ -13,13 +47,13 @@ class DataStorageInterface(Protocol):
     def commit(self) -> None:
         ...
 
+    def create[T, U](self, resource: T) -> U:
+        ...
+
     def read[U](self, resource_type: type[U], resource_id: int) -> U | None:
         ...
 
-    def read_all[U](self, resource_type: type[U]) -> list[U]:
-        ...
-
-    def create[T, U](self, resource: T) -> U:
+    def read_all[U](self, resource_type: type[U], filter: Optional[Condition] = None) -> list[U]:
         ...
 
     def update[U](self, resource: U) -> U | None:
