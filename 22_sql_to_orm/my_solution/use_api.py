@@ -116,6 +116,7 @@ def main():
     delete_event(event_id=2)
 
     all_events_2 = get_all_events()
+    print(all_events_2)
 
 
 if __name__ == "__main__":

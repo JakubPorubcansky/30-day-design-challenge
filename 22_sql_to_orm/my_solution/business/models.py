@@ -29,10 +29,13 @@ class EventReturn(BaseModel):
         return "Event"
     
     def has_started(self) -> bool:
-        datetime.now() >= self.start_date
+        return datetime.now() >= self.start_date
 
     def has_finished(self) -> bool:
-        datetime.now() > self.end_date
+        return datetime.now() > self.end_date
+
+    def tickets_available(self) -> bool:
+        return self.available_tickets > 0
 
 
 class TicketReturn(BaseModel):

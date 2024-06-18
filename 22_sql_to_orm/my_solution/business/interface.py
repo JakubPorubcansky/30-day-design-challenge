@@ -64,38 +64,30 @@ class DataStorageInterface(Protocol):
 
 
 def get_resource[U](dsi: DataStorageInterface, resource_type: type[U], resource_id: int) -> U:
-    with dsi:
-        resource = dsi.read(resource_type, resource_id)
-        if resource is None:
-            raise ResourceNotFoundException(f"{resource_type.name()} {resource_id} not found.")
-        return resource
+    resource = dsi.read(resource_type, resource_id)
+    if resource is None:
+        raise ResourceNotFoundException(f"{resource_type.name()} {resource_id} not found.")
+    return resource
 
 
 def get_all_resources[U](dsi: DataStorageInterface, resource_type: type[U]) -> list[U]:
-    with dsi:
-        return dsi.read_all(resource_type)
+    return dsi.read_all(resource_type)
 
 
 def create_resource[T, U](dsi: DataStorageInterface, resource: T) -> U:
-    with dsi:
-        created_resource = dsi.create(resource)
-        dsi.commit()
-        return created_resource
+    created_resource = dsi.create(resource)
+    return created_resource
     
 
 def update_resource[U](dsi: DataStorageInterface, resource: U) -> U:
-    with dsi:
-        updated_resource = dsi.update(resource)
-        if updated_resource is None:
-            raise ResourceNotFoundException(f"{resource.name()} {resource.id} not found.")
-        dsi.commit()
-        return updated_resource
+    updated_resource = dsi.update(resource)
+    if updated_resource is None:
+        raise ResourceNotFoundException(f"{resource.name()} {resource.id} not found.")
+    return updated_resource
 
 
 def delete_resource[U](dsi: DataStorageInterface, resource_type: type[U], resource_id: int) -> U:
-    with dsi:
-        deleted_resource = dsi.delete(resource_type, resource_id)
-        if deleted_resource is None:
-            raise ResourceNotFoundException(f"{resource_type.name()} {resource_id} not found.")
-        dsi.commit()
-        return deleted_resource
+    deleted_resource = dsi.delete(resource_type, resource_id)
+    if deleted_resource is None:
+        raise ResourceNotFoundException(f"{resource_type.name()} {resource_id} not found.")
+    return deleted_resource

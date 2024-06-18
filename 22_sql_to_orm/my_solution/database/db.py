@@ -78,8 +78,8 @@ class DatabaseHandler:
         db_type = RETURN_TO_DB_TYPE_MAP[type(resource)]
         db_resource = self.session.query(db_type).get(resource.id)
         if db_resource is None:
-            return None
         
+            return None
         for key, value in resource.dict().items():
             setattr(db_resource, key, value)
 
