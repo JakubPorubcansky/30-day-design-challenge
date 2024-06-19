@@ -1,4 +1,5 @@
-from pydantic import BaseModel
+from typing import Self
+from pydantic import BaseModel, NonNegativeInt, EmailStr, model_validator
 from datetime import datetime
 
 
@@ -7,13 +8,19 @@ class EventCreate(BaseModel):
     location: str
     start_date: datetime
     end_date: datetime
-    available_tickets: int
+    available_tickets: NonNegativeInt
+
+    @model_validator(mode='after')
+    def check_passwords_match(self) -> Self:
+        if self.start_date >= self.end_date:
+            raise ValueError('start_date has to be before end_date')
+        return self
 
 
 class TicketCreate(BaseModel):
     event_id: int
     customer_name: str
-    customer_email: str
+    customer_email: EmailStr
 
 
 class EventReturn(BaseModel):
@@ -22,7 +29,7 @@ class EventReturn(BaseModel):
     location: str
     start_date: datetime
     end_date: datetime
-    available_tickets: int
+    available_tickets: NonNegativeInt
 
     @classmethod
     def name(cls):
@@ -42,7 +49,7 @@ class TicketReturn(BaseModel):
     id: int
     event_id: int
     customer_name: str
-    customer_email: str
+    customer_email: EmailStr
 
     @classmethod
     def name(cls):
