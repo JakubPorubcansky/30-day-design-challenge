@@ -3,7 +3,7 @@ from fastapi import FastAPI
 
 from api.exception_handling import register_exception_handlers
 from api import routes
-
+import business.notifications as notifications
 from database.setup import init_db
 from database.create_db import create_db
 
@@ -19,6 +19,8 @@ app.include_router(routes.router)
 @app.on_event("startup")
 async def startup_event():
     init_db(DB_FILE_NAME)
+    notifications.email.subscribe()
+    notifications.sms.subscribe()
 
 
 def main():

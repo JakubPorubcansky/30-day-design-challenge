@@ -8,6 +8,8 @@ from .interface import (
     FilterCondition,
     Operator
 )
+from .config import Config
+from .notifications.core import trigger_event, NotificationTrigger
 from .models import EventCreate, TicketCreate, EventReturn, TicketReturn
 from .exceptions import OperationRejectedException
     
@@ -16,9 +18,7 @@ def with_data_storage(func):
     @wraps(func)
     def wrapper(dsi: DataStorageInterface, *args, **kwargs):
         with dsi:
-            result = func(dsi, *args, **kwargs)
-            dsi.commit()
-            return result
+            return func(dsi, *args, **kwargs)
         
     return wrapper
 
@@ -35,7 +35,13 @@ def get_all_events(dsi: DataStorageInterface) -> list[EventReturn]:
 
 @with_data_storage
 def create_event(dsi: DataStorageInterface, event: EventCreate) -> EventReturn:
-    return create_resource(dsi, event)
+    created_event = create_resource(dsi, event)
+    dsi.commit()
+
+    if Config.SEND_NOTIFICATIONS:
+        trigger_event(NotificationTrigger.EVENT_CREATED, event=created_event)
+
+    return created_event
 
 
 @with_data_storage
@@ -47,6 +53,7 @@ def delete_event(dsi: DataStorageInterface, event_id: int) -> EventReturn:
         dsi.delete(TicketReturn, ticket.id)
     
     dsi.delete(EventReturn, event_id)
+    dsi.commit()
     return event
 
 
@@ -67,6 +74,7 @@ def cancel_ticket(dsi: DataStorageInterface, ticket_id: int) -> TicketReturn:
 
     event.available_tickets += 1
     dsi.update(event)
+    dsi.commit()
 
     return ticket
     
@@ -81,6 +89,7 @@ def change_name_on_ticket(dsi: DataStorageInterface, ticket_id: int, name: str) 
     
     ticket.customer_name = name
     dsi.update(ticket)
+    dsi.commit()
 
     return ticket
 
@@ -99,5 +108,9 @@ def book_ticket(dsi: DataStorageInterface, ticket: TicketCreate) -> TicketReturn
 
     event.available_tickets -= 1
     dsi.update(event)
+    dsi.commit()
+    
+    if Config.SEND_NOTIFICATIONS:
+        trigger_event(NotificationTrigger.TICKET_BOOKED, ticket=created_ticket)
 
     return created_ticket
